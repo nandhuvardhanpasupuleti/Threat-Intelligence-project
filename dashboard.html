@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Secure Access · Threat Intel Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root { --green:#00ff88; --cyan:#00d4ff; --red:#ff1a1a; --bg:#040810; --card:#06101e; --border:#0d2137; }
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  min-height:100vh;background:var(--bg);color:#c8d8e8;font-family:'Share Tech Mono',monospace;
+  display:flex;align-items:center;justify-content:center;padding:24px;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(0,212,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.04) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none;z-index:0;
+}
+.wrap{position:relative;z-index:1;width:100%;max-width:400px;}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:0.95rem;color:var(--cyan);letter-spacing:3px;text-align:center;margin-bottom:8px;text-shadow:0 0 20px var(--cyan);}
+.logo em{color:var(--red);font-style:normal;}
+.sub{font-size:0.62rem;color:#3a5570;text-align:center;letter-spacing:2px;margin-bottom:22px;}
+.card{
+  background:var(--card);border:1px solid var(--border);border-radius:8px;padding:28px 26px;
+  box-shadow:0 0 40px rgba(0,212,255,0.08);
+}
+.card::before{content:'';display:block;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0.5;margin:-28px -26px 22px -26px;border-radius:8px 8px 0 0;}
+label{display:block;font-size:0.58rem;color:#3a5570;letter-spacing:2px;margin-bottom:6px;}
+input{
+  width:100%;padding:12px 14px;margin-bottom:16px;background:#040d18;border:1px solid #0d2137;border-radius:4px;
+  color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:0.9rem;
+}
+input:focus{outline:none;border-color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,0.15);}
+button{
+  width:100%;padding:14px;margin-top:4px;background:linear-gradient(180deg,#062030,#040d18);
+  border:1px solid var(--cyan);border-radius:4px;color:var(--green);font-family:'Orbitron',monospace;font-size:0.72rem;letter-spacing:3px;cursor:pointer;
+}
+button:hover{box-shadow:0 0 20px rgba(0,212,255,0.2);}
+.err{margin-top:14px;padding:10px;border-radius:4px;background:rgba(255,26,26,0.1);border:1px solid rgba(255,26,26,0.35);color:var(--red);font-size:0.75rem;text-align:center;}
+.hint{margin-top:18px;font-size:0.58rem;color:#1e3a50;text-align:center;line-height:1.5;}
+.hint a{color:var(--cyan);text-decoration:none;}
+.hint a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="logo">AI ENDPOINT <em>THREAT INTEL</em></div>
+  <div class="sub">AUTHENTICATED MONITORING CONSOLE</div>
+  <div class="card">
+    <form method="post" action="{{ url_for('login') }}">
+      {% if request.args.get('next') %}
+      <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+      {% endif %}
+      <label for="username">OPERATOR ID</label>
+      <input type="text" id="username" name="username" autocomplete="username" required autofocus>
+      <label for="password">ACCESS KEY</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required>
+      <button type="submit">ENTER DASHBOARD</button>
+    </form>
+    {% if error %}
+    <div class="err">{{ error }}</div>
+    {% endif %}
+    <p class="hint">New operator? <a href="{{ url_for('signup') }}">Create an account</a>. Or use env defaults admin / admin until you register.</p>
+  </div>
+</div>
+</body>
+</html>
